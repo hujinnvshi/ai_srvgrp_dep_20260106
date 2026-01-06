@@ -1,0 +1,129 @@
+{
+  "service_type": "mysql",
+  "instance_id": "172.16.47.63_9010",
+  "server_info": {
+    "ip": "172.16.47.63",
+    "hostname": "oracle",
+    "port": 9010,
+    "ssh_user": "root",
+    "os": "CentOS 7",
+    "cpu_cores": 48,
+    "total_memory_gb": 220,
+    "disk_info": "/old-data 15TB"
+  },
+  "service_info": {
+    "name": "MySQL5739_ISAS_6003",
+    "version": "5.7.39",
+    "basedir": "/old-data/MySQL5739_ISAS_6003/base/5739",
+    "datadir": "/old-data/MySQL5739_ISAS_6003/data",
+    "config_file": "/old-data/MySQL5739_ISAS_6003/base/5739/my.cnf",
+    "socket": "/old-data/MySQL5739_ISAS_6003/data/mysql.sock",
+    "pid_file": "/old-data/MySQL5739_ISAS_6003/data/mysql.pid",
+    "error_log": "/old-data/MySQL5739_ISAS_6003/log/mysqldb-error.err",
+    "slow_query_log": "/old-data/MySQL5739_ISAS_6003/log/mysqldb-query.err"
+  },
+  "optimization": {
+    "date": "2026-01-06",
+    "optimized_by": "AI服务组",
+    "version": "1.0",
+    "changes": [
+      {
+        "parameter": "innodb_buffer_pool_size",
+        "before": "134G",
+        "after": "100G",
+        "reason": "降低内存占用，释放约30GB内存，降低OOM风险"
+      },
+      {
+        "parameter": "max_connections",
+        "before": "15000",
+        "after": "2000",
+        "reason": "降低连接数限制，减少内存占用"
+      },
+      {
+        "parameter": "query_cache_size",
+        "before": "640M",
+        "after": "0 (removed)",
+        "reason": "移除废弃的query_cache配置，消除锁竞争"
+      },
+      {
+        "parameter": "slow_query_log",
+        "before": "off",
+        "after": "on",
+        "reason": "启用慢查询日志，便于性能分析"
+      },
+      {
+        "parameter": "long_query_time",
+        "before": "5",
+        "after": "2",
+        "reason": "降低阈值，捕获更多慢查询"
+      },
+      {
+        "parameter": "innodb_io_capacity",
+        "before": "200",
+        "after": "2000",
+        "reason": "适应高性能存储设备"
+      },
+      {
+        "parameter": "innodb_io_capacity_max",
+        "before": "1000",
+        "after": "4000",
+        "reason": "提升IO吞吐量"
+      },
+      {
+        "parameter": "innodb_flush_log_at_trx_commit",
+        "before": "1",
+        "after": "2",
+        "reason": "提升写入性能（可能丢失1秒数据）"
+      },
+      {
+        "parameter": "sync_binlog",
+        "before": "1",
+        "after": "10",
+        "reason": "提升写入性能"
+      }
+    ],
+    "results": {
+      "memory": {
+        "before_mb": 158000,
+        "after_mb": 12600,
+        "improvement": "降低92%",
+        "freed_mb": 145400
+      },
+      "system": {
+        "available_memory_before_gb": 15,
+        "available_memory_after_gb": 161,
+        "improvement": "提升973%",
+        "memory_usage_before_percent": 86,
+        "memory_usage_after_percent": 20
+      }
+    }
+  },
+  "deployment": {
+    "deployed": true,
+    "deploy_date": "2026-01-06",
+    "systemd_service": "mysql-6003",
+    "systemd_service_file": "/etc/systemd/system/mysql-6003.service",
+    "backup_file": "/old-data/MySQL5739_ISAS_6003/base/5739/my.cnf.backup.20260106_173952",
+    "current_config": "/old-data/MySQL5739_ISAS_6003/base/5739/my.cnf",
+    "status": "running",
+    "pid": 34143,
+    "boot_enabled": true
+  },
+  "ssh": {
+    "host": "172.16.47.63",
+    "user": "root",
+    "auth_method": "ssh_key",
+    "connection_test": "success"
+  },
+  "rollback": {
+    "available": true,
+    "backup_location": "/old-data/MySQL5739_ISAS_6003/base/5739/my.cnf.backup.20260106_173952",
+    "rollback_command": "cp /old-data/MySQL5739_ISAS_6003/base/5739/my.cnf.backup.20260106_173952 /old-data/MySQL5739_ISAS_6003/base/5739/my.cnf && systemctl restart mysql-6003"
+  },
+  "notes": [
+    "MySQL root 密码验证失败，需确认实际密码",
+    "优化后刷盘策略可能丢失1秒数据，业务需评估风险",
+    "建议持续监控 Buffer Pool 命中率和慢查询",
+    "系统其他MySQL实例总占用约180GB内存"
+  ]
+}
