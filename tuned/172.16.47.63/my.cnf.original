@@ -1,0 +1,127 @@
+[client]
+port = 16003
+socket = /old-data/MySQL5739_ISAS_6003/data/mysql.sock
+
+[mysql]
+no-beep
+prompt = "\u@M5739 \R:\m:\s [\d]> "
+auto-rehash
+default-character-set = utf8
+
+[mysqld]
+########basic settings########
+server-id = 5
+port = 9010
+user = MySQL5739_ISAS_6003
+bind-address = 0.0.0.0
+socket = /old-data/MySQL5739_ISAS_6003/data/mysql.sock
+basedir = /old-data/MySQL5739_ISAS_6003/base/mysql-5.7.39-linux-glibc2.12-x86_64
+datadir = /old-data/MySQL5739_ISAS_6003/data
+pid-file = /old-data/MySQL5739_ISAS_6003/data/mysql.pid
+character-set-server = utf8
+skip-character-set-client-handshake = 1
+wait_timeout = 3000
+interactive_timeout = 3000
+autocommit = 1
+skip_name_resolve = 1
+max_connections = 15000
+max_connect_errors = 10000
+# skip-grant-tables
+
+
+
+# early-plugin-load=keyring_file.so
+# keyring_file_data=/old-data/MySQL5739_ISAS_6003/mysql-keyring
+
+# early-plugin-load=keyring_file.so
+# keyring_file_data=/var/lib/mysql-keyring/keyring
+
+default-storage-engine = INNODB
+transaction_isolation = READ-COMMITTED
+explicit_defaults_for_timestamp = 1
+sort_buffer_size = 16M
+join_buffer_size = 16M
+tmp_table_size = 1G
+max_allowed_packet = 64M
+sql_mode = "STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION,NO_ZERO_DATE,NO_ZERO_IN_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER"
+
+interactive_timeout = 3600
+
+wait_timeout = 3600
+
+read_buffer_size = 16M
+read_rnd_buffer_size = 16M
+###############################
+#thread_cache_size
+###############################
+# query_cache_expire = 600
+query_cache_type = 1
+query_cache_size = 640M
+table_open_cache = 20000
+thread_cache_size = 150
+myisam_max_sort_file_size = 10G
+myisam_sort_buffer_size = 64M
+key_buffer_size = 64M
+back_log = 512
+#flush_time=0
+open_files_limit = 65536
+table_definition_cache = 14000
+
+########log settings########
+log-output = FILE
+general_log = 0
+general_log_file = /old-data/MySQL5739_ISAS_6003/log/mysqldb-general.err
+slow_query_log = off
+slow_query_log_file = /old-data/MySQL5739_ISAS_6003/log/mysqldb-query.err
+long_query_time = 5
+log-error = /old-data/MySQL5739_ISAS_6003/log/mysqldb-error.err
+log_queries_not_using_indexes = 1
+log_slow_admin_statements = 1
+log_slow_slave_statements = 1
+log_throttle_queries_not_using_indexes = 10
+expire_logs_days = 90
+min_examined_row_limit = 100
+
+########innodb settings########
+innodb_io_capacity = 200
+innodb_io_capacity_max = 1000
+innodb_buffer_pool_size = 134G
+innodb_buffer_pool_instances = 16
+innodb_buffer_pool_load_at_startup = 1
+innodb_buffer_pool_dump_at_shutdown = 1
+innodb_lru_scan_depth = 1024
+innodb_lock_wait_timeout = 8
+
+innodb_flush_method = O_DIRECT
+
+innodb_log_file_size = 4G
+innodb_log_files_in_group = 4
+innodb_log_buffer_size = 256M
+innodb_undo_logs = 128
+innodb_undo_tablespaces = 3
+innodb_undo_log_truncate = 1
+innodb_max_undo_log_size = 10G
+innodb_flush_neighbors = 0
+innodb_purge_threads = 16
+innodb_large_prefix = 1
+innodb_thread_concurrency = 0
+innodb_print_all_deadlocks = 1
+innodb_strict_mode = 1
+innodb_sort_buffer_size = 64M
+innodb_flush_log_at_trx_commit = 1
+innodb_autoextend_increment = 64
+innodb_concurrency_tickets = 5000
+innodb_old_blocks_time = 1000
+innodb_open_files = 65536
+innodb_stats_on_metadata = 0
+innodb_file_per_table = 1
+innodb_checksum_algorithm = 0
+innodb_data_file_path=ibdata1:200M;ibdata2:200M;ibdata3:200M:autoextend:max:5G
+innodb_temp_data_file_path = ibtmp1:200M:autoextend:max:20G
+innodb_buffer_pool_dump_pct = 40
+innodb_page_cleaners = 16
+innodb_purge_rseg_truncate_frequency = 128
+binlog_gtid_simple_recovery = 1
+log_timestamps = system
+show_compatibility_56 = on
+
