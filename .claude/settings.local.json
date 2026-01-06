@@ -13,7 +13,8 @@
       "Bash(ssh-keyscan:*)",
       "Bash(~/.ssh/known_hosts)",
       "Bash(scp:*)",
-      "Bash(tee:*)"
+      "Bash(tee:*)",
+      "WebSearch"
     ]
   }
 }
