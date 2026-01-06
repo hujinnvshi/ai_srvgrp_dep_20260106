@@ -1,0 +1,146 @@
+# MySQL 5.7.39 优化配置文件
+# 服务器: 172.16.47.63
+# 实例: MySQL5739_ISAS_6003
+# 端口: 9010
+# 优化日期: 2026-01-06
+#
+# 主要优化内容:
+# 1. innodb_buffer_pool_size: 134G -> 100G (释放约 30GB 内存)
+# 2. 移除废弃的 query_cache 配置
+# 3. max_connections: 15000 -> 2000
+# 4. 启用慢查询日志
+# 5. 优化 IO 和刷盘策略
+# 6. 修正配置文件重复参数
+
+[client]
+port = 16003
+socket = /old-data/MySQL5739_ISAS_6003/data/mysql.sock
+
+[mysql]
+no-beep
+prompt = "\u@M5739 \R:\m:\s [\d]> "
+auto-rehash
+default-character-set = utf8
+
+[mysqld]
+########## 基础设置 ##########
+server-id = 5
+port = 9010
+user = MySQL5739_ISAS_6003
+bind-address = 0.0.0.0
+socket = /old-data/MySQL5739_ISAS_6003/data/mysql.sock
+basedir = /old-data/MySQL5739_ISAS_6003/base/mysql-5.7.39-linux-glibc2.12-x86_64
+datadir = /old-data/MySQL5739_ISAS_6003/data
+pid-file = /old-data/MySQL5739_ISAS_6003/data/mysql.pid
+character-set-server = utf8
+skip-character-set-client-handshake = 1
+skip_name_resolve = 1
+autocommit = 1
+
+########## 连接设置 (优化) ##########
+max_connections = 2000                    # 从 15000 降至 2000，降低内存占用
+max_connect_errors = 10000
+wait_timeout = 3600                      # 修正重复配置
+interactive_timeout = 3600               # 修正重复配置
+thread_cache_size = 150
+back_log = 512
+
+########## 内存配置 (优化) ##########
+innodb_buffer_pool_size = 100G           # 从 134G 降至 100G，释放约 30GB 内存
+innodb_buffer_pool_instances = 16        # 每个实例约 6.25GB
+innodb_buffer_pool_load_at_startup = 1
+innodb_buffer_pool_dump_at_shutdown = 1
+innodb_buffer_pool_dump_pct = 40
+
+# Query Cache 已在 MySQL 5.7 中废弃，8.0 完全移除
+# query_cache_type = 0                   # 已移除
+# query_cache_size = 0                    # 已移除
+
+########## 缓存和缓冲区 ##########
+sort_buffer_size = 16M
+join_buffer_size = 16M
+read_buffer_size = 16M
+read_rnd_buffer_size = 16M
+tmp_table_size = 1G
+max_heap_table_size = 1G
+table_open_cache = 20000
+table_definition_cache = 14000
+key_buffer_size = 64M
+myisam_max_sort_file_size = 10G
+myisam_sort_buffer_size = 64M
+
+########## 存储引擎 ##########
+default-storage-engine = INNODB
+transaction_isolation = READ-COMMITTED
+explicit_defaults_for_timestamp = 1
+max_allowed_packet = 64M
+sql_mode = "STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION,NO_ZERO_DATE,NO_ZERO_IN_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER"
+
+########## InnoDB 设置 (优化) ##########
+innodb_io_capacity = 2000                # 从 200 提升至 2000，适应 SSD/高性能存储
+innodb_io_capacity_max = 4000            # 从 1000 提升至 4000
+innodb_flush_method = O_DIRECT
+innodb_flush_log_at_trx_commit = 2       # 从 1 改为 2，提升性能 (每秒刷盘)
+sync_binlog = 10                         # 从 1 改为 10，提升性能 (每10次事务刷盘)
+                                         # 注意: 如果业务要求绝对安全，保持为 1
+
+innodb_log_file_size = 4G
+innodb_log_files_in_group = 4
+innodb_log_buffer_size = 256M
+
+innodb_lru_scan_depth = 1024
+innodb_lock_wait_timeout = 8
+innodb_page_cleaners = 16
+innodb_purge_threads = 16
+innodb_thread_concurrency = 0
+innodb_open_files = 65536
+
+########## InnoDB Undo 表空间 (优化) ##########
+innodb_undo_logs = 128
+innodb_undo_tablespaces = 3
+innodb_undo_log_truncate = 1
+innodb_max_undo_log_size = 10G
+innodb_purge_rseg_truncate_frequency = 128
+
+########## InnoDB 其他设置 ##########
+innodb_file_per_table = 1
+innodb_large_prefix = 1
+innodb_strict_mode = 1
+innodb_sort_buffer_size = 64M
+innodb_autoextend_increment = 64
+innodb_old_blocks_time = 1000
+innodb_stats_on_metadata = 0
+innodb_checksum_algorithm = 0
+innodb_concurrency_tickets = 5000
+innodb_print_all_deadlocks = 1
+
+########## InnoDB 数据文件配置 ##########
+innodb_data_file_path = ibdata1:200M;ibdata2:200M;ibdata3:200M:autoextend:max:5G
+innodb_temp_data_file_path = ibtmp1:200M:autoextend:max:20G
+
+########## 日志设置 (优化) ##########
+log-output = FILE
+general_log = 0
+general_log_file = /old-data/MySQL5739_ISAS_6003/log/mysqldb-general.err
+
+# 启用慢查询日志
+slow_query_log = 1                       # 从 0 改为 1，启用慢查询日志
+slow_query_log_file = /old-data/MySQL5739_ISAS_6003/log/mysqldb-query.err
+long_query_time = 2                      # 从 5 改为 2，捕获更短的慢查询
+log_queries_not_using_indexes = 1
+log_slow_admin_statements = 1
+log_throttle_queries_not_using_indexes = 10
+min_examined_row_limit = 100
+
+log-error = /old-data/MySQL5739_ISAS_6003/log/mysqldb-error.err
+
+########## Binlog 设置 ##########
+expire_logs_days = 90
+binlog_gtid_simple_recovery = 1
+
+########## 其他设置 ##########
+log_timestamps = system
+show_compatibility_56 = on
+open_files_limit = 65536
+
+# skip-grant-tables  # 生产环境必须注释掉此行
