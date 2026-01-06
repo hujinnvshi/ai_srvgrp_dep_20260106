@@ -1,0 +1,52 @@
+[Unit]
+Description=MySQL 5.7.39 Server (Instance 6003)
+Documentation=man:mysqld(8)
+Documentation=http://dev.mysql.com/doc/refman/en/using-systemd.html
+After=network.target
+After=syslog.target
+Wants=network.target
+
+[Service]
+Type=notify
+User=MySQL5739_ISAS_6003
+Group=MySQL5739_ISAS_6003
+
+# MySQL 配置路径
+Environment="MYSQLD_OPTS=--defaults-file=/old-data/MySQL5739_ISAS_6003/base/5739/my.cnf"
+
+# 数据目录
+Environment="MYSQL_DATADIR=/old-data/MySQL5739_ISAS_6003/data"
+
+# PID 文件
+PIDFile=/old-data/MySQL5739_ISAS_6003/data/mysql.pid
+
+# 可执行文件
+ExecStart=/old-data/MySQL5739_ISAS_6003/base/5739/bin/mysqld $MYSQLD_OPTS
+ExecStartPost=/old-data/MySQL5739_ISAS_6003/base/5739/bin/mysqladmin --socket=/old-data/MySQL5739_ISAS_6003/data/mysql.sock ping || true
+
+# 优雅关闭（等待 600 秒）
+ExecStop=/old-data/MySQL5739_ISAS_6003/base/5739/bin/mysqladmin --socket=/old-data/MySQL5739_ISAS_6003/data/mysql.sock shutdown
+TimeoutSec=600
+Restart=on-failure
+RestartPreventExitStatus=1
+
+# 私有临时目录
+PrivateTmp=true
+
+# 性能优化
+LimitNOFILE=65535
+LimitNPROC=65535
+
+# 安全设置
+NoNewPrivileges=true
+
+# 内存限制（可选，根据实际情况调整）
+# MemoryLimit=180G
+
+# 日志
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=mysql-6003
+
+[Install]
+WantedBy=multi-user.target
