@@ -4,7 +4,16 @@
       "Bash(cat:*)",
       "Bash(tree:*)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(git branch:*)",
+      "Bash(git push:*)",
+      "Bash(ls:*)",
+      "Bash(ssh-copy-id:*)",
+      "Bash(ssh:*)",
+      "Bash(ssh-keyscan:*)",
+      "Bash(~/.ssh/known_hosts)",
+      "Bash(scp:*)",
+      "Bash(tee:*)"
     ]
   }
 }
