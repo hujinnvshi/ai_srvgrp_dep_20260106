@@ -27,21 +27,21 @@ ExecStartPost=/old-data/MySQL5739_ISAS_6003/base/5739/bin/mysqladmin --socket=/o
 # 优雅关闭（等待 600 秒）
 ExecStop=/old-data/MySQL5739_ISAS_6003/base/5739/bin/mysqladmin --socket=/old-data/MySQL5739_ISAS_6003/data/mysql.sock shutdown
 TimeoutSec=600
-Restart=on-failure
+Restart=no
 RestartPreventExitStatus=1
 
 # 私有临时目录
 PrivateTmp=true
 
 # 性能优化
-LimitNOFILE=65535
-LimitNPROC=65535
+LimitNOFILE=165535
+LimitNPROC=165535
 
 # 安全设置
 NoNewPrivileges=true
 
 # 内存限制（可选，根据实际情况调整）
-# MemoryLimit=180G
+MemoryLimit=180G
 
 # 日志
 StandardOutput=syslog
