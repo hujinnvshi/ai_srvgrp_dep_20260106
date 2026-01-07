@@ -1,0 +1,60 @@
+{
+  "service_type": "hbase",
+  "instance_id": "172.16.47.57",
+  "server_info": {
+    "ip": "172.16.47.57",
+    "hostname": "hbase-server",
+    "os": "CentOS 7/8",
+    "cpu_cores": 8,
+    "total_memory_gb": 32
+  },
+  "service_info": {
+    "name": "HBase Standalone",
+    "version": "2.5.10",
+    "hadoop_version": "3.3.6",
+    "zookeeper_version": "3.8.4",
+    "jdk_version": "1.8.0_412",
+    "install_base": "/opt/hbase",
+    "data_dirs": ["/data/hbase", "/data/hadoop", "/data/zookeeper"]
+  },
+  "ports": {
+    "hbase_master": "16000",
+    "hbase_master_info": "16010",
+    "hbase_rs": "16020",
+    "hbase_rs_info": "16030",
+    "hadoop_namenode": "9000",
+    "hadoop_namenode_web": "9870",
+    "hadoop_datanode": "9866",
+    "hadoop_datanode_web": "9864",
+    "zookeeper": "2181",
+    "zookeeper_admin": "8080"
+  },
+  "deployment": {
+    "deployed": false,
+    "deploy_date": null,
+    "deployment_method": "standalone",
+    "backup_files": []
+  },
+  "optimization": {
+    "date": "2026-01-07",
+    "optimized_by": "AI服务组",
+    "version": "1.0",
+    "changes": [
+      {
+        "parameter": "hbase_heapsize",
+        "value": "8G",
+        "reason": "分配堆内存为总内存的25%"
+      },
+      {
+        "parameter": "hbase_regionserver_handler_count",
+        "value": "50",
+        "reason": "根据CPU核心数配置"
+      },
+      {
+        "parameter": "hfileformat",
+        "value": "3",
+        "reason": "使用HFile V3格式"
+      }
+    ]
+  }
+}

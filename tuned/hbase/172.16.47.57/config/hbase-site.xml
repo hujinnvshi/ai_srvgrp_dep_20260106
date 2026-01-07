@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<configuration>
+  <!-- HBase数据目录 - 使用本地文件系统 -->
+  <property>
+    <name>hbase.rootdir</name>
+    <value>file:///data/hbase</value>
+  </property>
+
+  <!-- ZooKeeper数据目录 -->
+  <property>
+    <name>hbase.zookeeper.property.dataDir</name>
+    <value>/data/hbase/zookeeper</value>
+  </property>
+
+  <!-- 单机模式配置 -->
+  <property>
+    <name>hbase.cluster.distributed</name>
+    <value>false</value>
+  </property>
+
+  <!-- HBase Master Web UI端口 -->
+  <property>
+    <name>hbase.master.info.port</name>
+    <value>16010</value>
+  </property>
+
+  <!-- RegionServer Web UI端口 -->
+  <property>
+    <name>hbase.regionserver.info.port</name>
+    <value>16030</value>
+  </property>
+</configuration>
