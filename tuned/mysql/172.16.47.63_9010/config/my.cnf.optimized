@@ -93,8 +93,8 @@ innodb_lock_wait_timeout = 8
 innodb_page_cleaners = 16
 innodb_purge_threads = 16
 innodb_thread_concurrency = 0
-innodb_open_files = 65536
-
+innodb_open_files = 655360
+open_files_limit = 655360
 ########## InnoDB Undo 表空间 (优化) ##########
 innodb_undo_logs = 128
 innodb_undo_tablespaces = 3
