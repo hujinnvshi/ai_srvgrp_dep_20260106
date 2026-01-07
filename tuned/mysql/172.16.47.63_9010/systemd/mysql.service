@@ -7,7 +7,7 @@ After=syslog.target
 Wants=network.target
 
 [Service]
-Type=notify
+Type=simple
 User=MySQL5739_ISAS_6003
 Group=MySQL5739_ISAS_6003
 
@@ -22,7 +22,6 @@ PIDFile=/old-data/MySQL5739_ISAS_6003/data/mysql.pid
 
 # 可执行文件
 ExecStart=/old-data/MySQL5739_ISAS_6003/base/5739/bin/mysqld $MYSQLD_OPTS
-ExecStartPost=/old-data/MySQL5739_ISAS_6003/base/5739/bin/mysqladmin --socket=/old-data/MySQL5739_ISAS_6003/data/mysql.sock ping || true
 
 # 优雅关闭（等待 600 秒）
 ExecStop=/old-data/MySQL5739_ISAS_6003/base/5739/bin/mysqladmin --socket=/old-data/MySQL5739_ISAS_6003/data/mysql.sock shutdown
