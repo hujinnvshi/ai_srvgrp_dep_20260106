@@ -19,7 +19,8 @@
       "Bash(if:*)",
       "Bash(then ssh-keygen -t rsa -b 4096 -f ~/.ssh/id_rsa -N \"\")",
       "Bash(else:*)",
-      "Bash(fi:*)"
+      "Bash(fi:*)",
+      "Bash(chmod:*)"
     ]
   }
 }
